@@ -1,2 +1,5 @@
 import './create-data.js';
-import './card.js';
+import { createCards } from './card.js';
+
+createCards();
+
