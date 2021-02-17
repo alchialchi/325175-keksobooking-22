@@ -55,14 +55,17 @@ const DESCRIPTIONS = [
 ];
 
 const createOffer = () => {
+  const locationX = getFloatingRandomNumber(35.65000, 35.70000, 5);
+  const locationY = getFloatingRandomNumber(139.70000, 139.80000, 5);
+
   return {
     author: {
       avatar: `img/avatars/user0${getInclusiveRandomNumber(1, 8)}.png`,
     },
     offer: {
       title: getRandomArrayElement(TITLES),
-      address: '{{location.x}}, {{location.y}}',
-      price: `${getInclusiveRandomNumber(100, 400)} SEK`,
+      address: `${locationX}, ${locationY}`,
+      price: getInclusiveRandomNumber(100, 400),
       type: getRandomArrayElement(PROPERTY_TYPES),
       rooms: getInclusiveRandomNumber(1, 5),
       guests: getInclusiveRandomNumber(1, 5),
@@ -73,8 +76,8 @@ const createOffer = () => {
       photos: getRandomNewArray(PHOTOS),
     },
     location: {
-      x: getFloatingRandomNumber(35.65000, 35.70000, 5),
-      y: getFloatingRandomNumber(139.70000, 139.80000, 5),
+      x: locationX,
+      y: locationY,
     },
   };
 };

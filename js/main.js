@@ -1,5 +1,5 @@
-import { createOffers } from './create-data.js';
+import './create-data.js';
+import { createCards } from './card.js';
 
-const OFFERS_COUNT = 10;
+createCards();
 
-createOffers(OFFERS_COUNT);
