@@ -1,6 +1,3 @@
-import { createOffers } from './create-data.js';
-
-const mapCanvas = document.querySelector('.map__canvas');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const propertyType = {
@@ -17,8 +14,6 @@ function checkGuests(guests) {
 function checkRooms(rooms) {
   return rooms > 1 ? rooms + ' комнаты' : rooms + ' комната';
 }
-
-const cards = createOffers();
 
 const createCard = (card) => {
   const cardElement = cardTemplate.cloneNode(true);
@@ -59,14 +54,10 @@ const createCard = (card) => {
   return cardElement;
 }
 
-const createCards = () => {
-  const cardListFragment = document.createDocumentFragment();
-
-  cards.forEach((card) => {
-    cardListFragment.appendChild(createCard(card));
-  });
-
-  mapCanvas.appendChild(cardListFragment);
+const createCards = (offer) => {
+  const offerCard = createCard(offer);
+  const mapFragment = document.createDocumentFragment();
+  mapFragment.appendChild(offerCard)
 }
 
-export { createCards };
+export { createCards, createCard };
