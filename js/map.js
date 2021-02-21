@@ -65,6 +65,7 @@ export const initMap = (similarOffers) => {
     );
 
     offerMarker.addTo(map).bindPopup(createCard({ author, offer }));
+    offerMarker.on('click', function() { this.openPopup() });
   });
 };
 
