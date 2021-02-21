@@ -9,7 +9,7 @@ import {
 
 const FEATURES = [
   'wifi',
-  'diswasher',
+  'dishwasher',
   'parking',
   'washer',
   'elevator',
@@ -54,9 +54,17 @@ const DESCRIPTIONS = [
   'Perfect place for walks and workouts along the river.',
 ];
 
+const MIN_LATITUDE = 35.65000;
+const MAX_LATITUDE = 35.70000;
+const MIN_LONGITUDE = 139.70000;
+const MAX_LONGITUDE = 139.80000;
+const MAIN_LATITUDE = 35.68950;
+const MAIN_LONGITUDE = 139.69171;
+const LOCATION_FLOAT = 5;
+
 const createOffer = () => {
-  const locationX = getFloatingRandomNumber(35.65000, 35.70000, 5);
-  const locationY = getFloatingRandomNumber(139.70000, 139.80000, 5);
+  const locationX = getFloatingRandomNumber(MIN_LATITUDE, MAX_LATITUDE, LOCATION_FLOAT);
+  const locationY = getFloatingRandomNumber(MIN_LONGITUDE, MAX_LONGITUDE, LOCATION_FLOAT);
 
   return {
     author: {
@@ -86,4 +94,4 @@ const createOffers = (quantity) => {
   return new Array(quantity).fill(null).map(createOffer);
 }
 
-export { createOffers };
+export { createOffers, MAIN_LATITUDE, MAIN_LONGITUDE, LOCATION_FLOAT };

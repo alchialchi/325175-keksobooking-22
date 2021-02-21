@@ -1,6 +1,10 @@
-import './create-data.js';
-import './form.js';
-import { createCards } from './card.js';
+import { createOffers } from './create-data.js';
+import './card.js';
+import { disableForm } from './form.js';
+import { initMap } from './map.js';
 
-createCards();
+const OFFER_AMOUNT = 10;
+const similarOffers = createOffers(OFFER_AMOUNT);
 
+disableForm();
+initMap(similarOffers);
