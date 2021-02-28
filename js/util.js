@@ -1,3 +1,5 @@
+const ALERT_SHOW_TIME = 5000;
+
 const validateMinMax = (min, max) => {
   if (min > max || min < 0) {
     throw 'Wrong function arguments. Minimum value must be 0 or positive and lower or equal to maximum';
@@ -36,9 +38,39 @@ const getRandomNewArray = (elements) => {
   return newArray;
 };
 
+const isEscEvent = (evt) => {
+  return evt.key === ('Escape' || 'Esc');
+};
+
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+
+  alertContainer.style.zIndex = 9999;
+  alertContainer.style.position = 'fixed';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = 0;
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '16px';
+  alertContainer.style.fontStyle = 'Tahoma';
+  alertContainer.style.color = '#ffffff';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+}
+
 export {
   getInclusiveRandomNumber,
   getFloatingRandomNumber,
   getRandomArrayElement,
-  getRandomNewArray
+  getRandomNewArray,
+  showAlert,
+  isEscEvent
 };

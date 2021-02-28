@@ -54,10 +54,4 @@ const createCard = (card) => {
   return cardElement;
 }
 
-const createCards = (offer) => {
-  const offerCard = createCard(offer);
-  const mapFragment = document.createDocumentFragment();
-  mapFragment.appendChild(offerCard)
-}
-
-export { createCards, createCard };
+export { createCard };
