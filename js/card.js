@@ -7,12 +7,14 @@ const propertyType = {
   palace: 'Дворец',
 }
 
-function checkGuests(guests) {
-  return guests > 1 ? guests + ' гостей' : guests + ' гостя';
+const checkGuests = (guests) => {
+  const guest = guests === 1 ? 'гостя' : 'гостей';
+  return `${guests} ${guest}`;
 }
 
-function checkRooms(rooms) {
-  return rooms > 1 ? rooms + ' комнаты' : rooms + ' комната';
+const checkRooms = (rooms) => {
+  const room = rooms === 1 ? 'комната' : 'комнаты';
+  return `${rooms} ${room}`;
 }
 
 const createCard = (card) => {

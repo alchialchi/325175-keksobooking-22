@@ -26,28 +26,25 @@ const minPriceTypes = {
   palace: 10000,
 };
 
-titleElement.addEventListener('invalid', () => {
-  if (titleElement.validity.valueMissing) {
-    titleElement.setCustomValidity('Обязательное поле для заполнения')
-  } else {
-    titleElement.setCustomValidity('');
-  }
-});
+// С этой функцией дальнейшая валидация не отрабатывает
 
-titleElement.addEventListener('input', () => {
-  const inputValueLength = titleElement.value.length;
+// А так же в html у нас есть minlength="30" maxlength="100" и из-за них кастомной валидации не видно..
 
+// titleElement.addEventListener('invalid', () => {
+//   titleElement.setCustomValidity(
+//     titleElement.validity.valueMissing ? 'Обязательное поле для заполнения' : '');
+// });
+
+const getMessage = (inputValueLength) => {
   if (inputValueLength < MIN_TITLE_LENGTH) {
-    titleElement.setCustomValidity(`Еще ${MAX_TITLE_LENGTH - inputValueLength} симв.`);
-  } else if (inputValueLength > MAX_TITLE_LENGTH) {
-    titleElement.setCustomValidity(`Удалите лишние ${inputValueLength - MAX_TITLE_LENGTH} симв.`);
-  } else {
-    titleElement.setCustomValidity('');
+    return `Еще ${MIN_TITLE_LENGTH - inputValueLength} симв.`;
   }
 
-  titleElement.reportValidity();
-})
-
+  if (inputValueLength > MAX_TITLE_LENGTH) {
+    return `Удалите лишние ${inputValueLength - MAX_TITLE_LENGTH} симв.`;
+  }
+  return '';
+}
 
 const capacityCheck = () => {
   const roomAmount = roomAmountElement.value;
@@ -63,40 +60,6 @@ const capacityCheck = () => {
     capacityElement.setCustomValidity('');
   }
 }
-
-capacityElement.addEventListener('change', () => {
-  capacityCheck();
-})
-
-roomAmountElement.addEventListener('change', () => {
-  capacityCheck();
-})
-
-typeElement.addEventListener('change', () => {
-  priceElement.placeholder = minPriceTypes[typeElement.value];
-  priceElement.min = minPriceTypes[typeElement.value];
-});
-
-priceElement.addEventListener('input', () => {
-  const priceValue = priceElement.value;
-  priceElement.min = minPriceTypes[typeElement.value];
-
-  if (priceValue > MAX_PRICE) {
-    priceElement.setCustomValidity(`Цена не может быть больше чем ${MAX_PRICE}`);
-  } else if (priceValue < priceElement.min) {
-    priceElement.setCustomValidity(`Стоимость не должна быть меньше чем ${priceElement.min}`);
-  } else {
-    priceElement.setCustomValidity('');
-  }
-});
-
-timeInElement.addEventListener('change', () => {
-  timeOutElement.value = timeInElement.value;
-});
-
-timeOutElement.addEventListener('change', () => {
-  timeInElement.value = timeOutElement.value;
-});
 
 const disableForm = () => {
   formElement.classList.add('ad-form--disabled');
@@ -123,6 +86,13 @@ const activateForm = () => {
   mapFeatures.removeAttribute('disabled');
 };
 
+const resetForm = () => {
+  formElement.reset();
+  mapFilters.reset();
+  resetMainMarker();
+  setAddress();
+}
+
 const setUserFormSubmit = () => {
   formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -138,19 +108,52 @@ const setUserFormSubmit = () => {
   });
 }
 
-const resetForm = () => {
-  formElement.reset();
-  mapFilters.reset();
-  resetMainMarker();
-  setAddress();
-}
-
 const setFormReset = () => {
   const resetButton = formElement.querySelector('.ad-form__reset');
 
-  resetButton.addEventListener('click', () => {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
     resetForm();
   })
 };
+
+capacityElement.addEventListener('change', () => {
+  capacityCheck();
+})
+
+roomAmountElement.addEventListener('change', () => {
+  capacityCheck();
+})
+
+typeElement.addEventListener('change', () => {
+  priceElement.placeholder = minPriceTypes[typeElement.value];
+  priceElement.min = minPriceTypes[typeElement.value];
+});
+
+titleElement.addEventListener('input', () => {
+  titleElement.setCustomValidity(getMessage(titleElement.value.length));
+  titleElement.reportValidity();
+});
+
+priceElement.addEventListener('input', () => {
+  const priceValue = priceElement.value;
+  priceElement.min = minPriceTypes[typeElement.value];
+
+  if (priceValue > MAX_PRICE) {
+    priceElement.setCustomValidity(`Цена не может быть больше чем ${MAX_PRICE}`);
+  } else if (priceValue < priceElement.min) {
+    priceElement.setCustomValidity(`Стоимость не должна быть меньше чем ${priceElement.min}`);
+  } else {
+    priceElement.setCustomValidity('');
+  }
+});
+
+timeInElement.addEventListener('change', () => {
+  timeOutElement.value = timeInElement.value;
+});
+
+timeOutElement.addEventListener('change', () => {
+  timeInElement.value = timeOutElement.value;
+});
 
 export { addressElement, disableForm, activateForm, setUserFormSubmit, setFormReset };

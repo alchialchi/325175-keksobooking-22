@@ -6,11 +6,11 @@ const MAIN_ZOOM = 10;
 const MAIN_PIN_WIDTH = 52;
 const PIN_WIDTH = 40;
 
+const map = window.L.map('map-canvas');
+
 const setAddress = () => {
   addressElement.value = `${MAIN_LATITUDE}, ${MAIN_LONGITUDE}`;
 };
-
-const map = window.L.map('map-canvas');
 
 const initMap = (similarOffers) => {
   map.on('load', () => {
