@@ -106,7 +106,7 @@ const setUserFormSubmit = () => {
       new FormData(evt.target),
     );
   });
-}
+};
 
 const setFormReset = () => {
   const resetButton = formElement.querySelector('.ad-form__reset');

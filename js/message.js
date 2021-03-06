@@ -1,52 +1,50 @@
+import { isEscEvent } from './util.js';
+
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const messageSuccess = successTemplate.cloneNode(true);
 const messageError = errorTemplate.cloneNode(true);
+const buttonClose = messageError.querySelector('.error__button');
 
-// Сделала правки, но баг с формой так и остался :(
+const onEscKeydown = (evt) => {
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    removeMessage();
+  }
+};
 
-const closeMessage = (message) => {
-  message.classList.add('hidden');
-  document.removeEventListener('click', handleClick(message));
-  document.removeEventListener('keydown', onEscKeydown(message));
+const handleClick = (evt) => {
+  evt.preventDefault();
+  removeMessage();
+};
+
+const showMessage = (message) => {
+  message.classList.remove('hidden');
+  message.style.zIndex = '9999999';
+  document.addEventListener('click', handleClick);
+  document.addEventListener('keydown', onEscKeydown);
+  document.body.appendChild(message);
 };
 
 const showSuccessMessage = () => {
-  document.body.appendChild(messageSuccess);
-  messageSuccess.classList.remove('hidden');
-  messageSuccess.style.zIndex = '9999999';
-  document.addEventListener('keydown', onEscKeydown(messageSuccess));
-  document.addEventListener('click', handleClick(messageSuccess));
+  showMessage(messageSuccess);
 };
 
 const showErrorMessage = () => {
-  const buttonClose = messageError.querySelector('.error__button');
-  document.body.appendChild(messageError);
-  messageError.classList.remove('hidden');
-  messageError.style.zIndex = '9999999';
-  buttonClose.addEventListener('click', handleClick(messageError));
-  document.addEventListener('click', handleClick(messageError));
-  document.addEventListener('keydown', onEscKeydown(messageError));
+  showMessage(messageError);
+  buttonClose.addEventListener('click', handleClick);
 };
 
-const isEscEvent = (evt) => {
-  return evt.key === ('Escape' || 'Esc');
-};
+const removeMessage = () => {
+  document.removeEventListener('click', handleClick);
+  document.removeEventListener('keydown', onEscKeydown);
 
-const onEscKeydown = (message) => {
-  return (evt) => {
-    if (isEscEvent(evt)) {
-      evt.preventDefault();
-      closeMessage(message);
-    }
+  if (messageSuccess) {
+    messageSuccess.classList.add('hidden');
   }
-};
 
-const handleClick = (message) => {
-  return (evt) => {
-    evt.preventDefault();
-    closeMessage(message);
-  }
+  messageError.classList.add('hidden');
+  buttonClose.removeEventListener('click', handleClick);
 };
 
 export { showSuccessMessage, showErrorMessage }
