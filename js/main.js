@@ -1,10 +1,13 @@
-import { createOffers } from './create-data.js';
 import './card.js';
-import { disableForm } from './form.js';
+import { disableForm, setFormReset, setUserFormSubmit } from './form.js';
 import { initMap } from './map.js';
-
-const OFFER_AMOUNT = 10;
-const similarOffers = createOffers(OFFER_AMOUNT);
+import { getData } from './api.js';
 
 disableForm();
-initMap(similarOffers);
+
+getData(( data ) => {
+  initMap(data);
+});
+
+setUserFormSubmit();
+setFormReset();
