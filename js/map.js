@@ -39,13 +39,14 @@ const initMap = (similarOffers) => {
     const lat = location.lat;
     const lng = location.lng;
 
-    const offerMarker = window.L.marker({
-      lat,
-      lng,
-    },
-    {
-      offerPinIcon,
-    },
+    const offerMarker = window.L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon: offerPinIcon,
+      },
     );
 
     offerMarker.addTo(map).bindPopup(createCard({ author, offer }));
