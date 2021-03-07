@@ -2,14 +2,13 @@ import { sendData } from './api.js';
 import { MAX_ROOMS_NUMBER } from './constants.js';
 import { setAddress, resetMainMarker } from './map.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
+import { deactivateFilterForm, activateFilterForm, mapFilters } from './filter.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 
 const formElement = document.querySelector('.ad-form');
-const mapFilters = document.querySelector('.map__filters');
-const mapFeatures = document.querySelector('.map__features');
 const typeElement = formElement.querySelector('#type');
 const priceElement = formElement.querySelector('#price');
 const timeInElement = formElement.querySelector('#timein');
@@ -26,9 +25,10 @@ const minPriceTypes = {
   palace: 10000,
 };
 
-// С этой функцией дальнейшая валидация не отрабатывает
+// С этой функцией дальнейшая валидация не отрабатывает, ну вернее не показывается
 
 // А так же в html у нас есть minlength="30" maxlength="100" и из-за них кастомной валидации не видно..
+// Может быть оставить что-tо одно?
 
 // titleElement.addEventListener('invalid', () => {
 //   titleElement.setCustomValidity(
@@ -65,25 +65,17 @@ const disableForm = () => {
   formElement.classList.add('ad-form--disabled');
   formElement.querySelectorAll('.ad-form fieldset').forEach((fieldset) => {
     fieldset.setAttribute('disabled', 'disabled');
-  })
-  mapFeatures.classList.add('map__filters--disabled');
-  mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
-    filter.setAttribute('disabled', '');
-  })
-  mapFeatures.setAttribute('disabled', 'disabled');
+  });
+  deactivateFilterForm();
 };
 
 const activateForm = () => {
   formElement.classList.remove('ad-form--disabled');
   formElement.querySelectorAll('.ad-form fieldset').forEach((fieldset) => {
     fieldset.removeAttribute('disabled');
-  })
+  });
   addressElement.setAttribute('readonly', 'readonly');
-  mapFilters.classList.remove('map__filters--disabled');
-  mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
-    filter.removeAttribute('disabled');
-  })
-  mapFeatures.removeAttribute('disabled');
+  activateFilterForm();
 };
 
 const resetForm = () => {

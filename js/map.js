@@ -1,6 +1,7 @@
 import { MAIN_LATITUDE, MAIN_LONGITUDE, LOCATION_FLOAT } from './constants.js';
 import { createCard } from './card.js';
 import { activateForm, addressElement } from './form.js';
+import { setFilteredMarkers } from './filter.js';
 
 const MAIN_ZOOM = 10;
 const MAIN_PIN_WIDTH = 52;
@@ -12,10 +13,13 @@ const setAddress = () => {
   addressElement.value = `${MAIN_LATITUDE}, ${MAIN_LONGITUDE}`;
 };
 
-const initMap = (similarOffers) => {
+const initMap = (offers) => {
   map.on('load', () => {
+    mainMarker.addTo(map);
     activateForm();
     setAddress();
+    setMarkers(offers);
+    setFilteredMarkers(offers);
   })
     .setView({
       lat: MAIN_LATITUDE,
@@ -28,30 +32,35 @@ const initMap = (similarOffers) => {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(map);
+};
 
-  similarOffers.forEach(({ author, offer, location }) => {
+const markers = [];
+
+const setMarkers = (offers) => {
+  offers.forEach((offer) => {
     const offerPinIcon = window.L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [PIN_WIDTH, PIN_WIDTH],
       iconAnchor: [PIN_WIDTH/2, PIN_WIDTH/2],
     });
 
-    const lat = location.lat;
-    const lng = location.lng;
-
-    const offerMarker = window.L.marker(
+    const marker = window.L.marker(
       {
-        lat,
-        lng,
+        lat: offer.location.lat,
+        lng: offer.location.lng,
       },
       {
         icon: offerPinIcon,
       },
     );
-
-    offerMarker.addTo(map).bindPopup(createCard({ author, offer }));
-    offerMarker.on('click', function() { this.openPopup() });
-  });
+    marker
+      .addTo(map)
+      .bindPopup(createCard(offer),
+        {
+          keepInView: true,
+        })
+    markers.push(marker);
+  })
 };
 
 const initMainMarker = () => {
@@ -82,15 +91,19 @@ const initMainMarker = () => {
   });
 
   return mainPinMarker;
-}
+};
 
 const mainMarker = initMainMarker();
-
-mainMarker.addTo(map);
 
 const resetMainMarker = () => {
   mainMarker.setLatLng([MAIN_LATITUDE, MAIN_LONGITUDE])
   map.setView(new window.L.LatLng(MAIN_LATITUDE, MAIN_LONGITUDE), MAIN_ZOOM);
-}
+};
 
-export { initMap, resetMainMarker, setAddress };
+const removeMarkers = () => {
+  markers.forEach(marker => {
+    marker.remove();
+  })
+};
+
+export { initMap, resetMainMarker, setAddress, removeMarkers, setMarkers };
