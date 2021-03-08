@@ -25,16 +25,6 @@ const minPriceTypes = {
   palace: 10000,
 };
 
-// С этой функцией дальнейшая валидация не отрабатывает, ну вернее не показывается
-
-// А так же в html у нас есть minlength="30" maxlength="100" и из-за них кастомной валидации не видно..
-// Может быть оставить что-tо одно?
-
-// titleElement.addEventListener('invalid', () => {
-//   titleElement.setCustomValidity(
-//     titleElement.validity.valueMissing ? 'Обязательное поле для заполнения' : '');
-// });
-
 const getMessage = (inputValueLength) => {
   if (inputValueLength < MIN_TITLE_LENGTH) {
     return `Еще ${MIN_TITLE_LENGTH - inputValueLength} симв.`;
@@ -123,7 +113,12 @@ typeElement.addEventListener('change', () => {
 });
 
 titleElement.addEventListener('input', () => {
-  titleElement.setCustomValidity(getMessage(titleElement.value.length));
+  const titleLength = titleElement.value.length;
+
+  titleLength > MIN_TITLE_LENGTH ? titleElement.removeAttribute('minlength') : null;
+  titleLength >= MAX_TITLE_LENGTH && titleLength > MIN_TITLE_LENGTH ? titleElement.removeAttribute('maxlength') : null;
+
+  titleElement.setCustomValidity(getMessage(titleLength));
   titleElement.reportValidity();
 });
 
