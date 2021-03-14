@@ -58,8 +58,13 @@ const resetFilters = (offers) => {
 const isSelectMatched = (select, selectType, offer) => {
   const value = select.value;
   const offerValue = offer[selectType];
-  return selectType === 'price' ? priceFilter[value](offerValue) : value === DEFAULT_SELECT_VALUE ? true : value === offerValue.toString();
-}
+  const isDefault = value === DEFAULT_SELECT_VALUE;
+
+  if (!isDefault) {
+    return selectType === 'price' ? priceFilter[value] : value === offerValue.toString();
+  }
+  return isDefault;
+};
 
 const isFeaturesMatched = (selectedFeatures, offerFeatures) => {
   return selectedFeatures.every((selectedFeature) => {
@@ -82,8 +87,12 @@ const filterOffers = (offers) => {
   let ad;
   for (let i = 0; i < offers.length; i++) {
     ad = offers[i];
-    if (isOfferMatched(ad.offer)) { filteredAds.push(ad) }
-    if (filteredAds.length === MAX_ADS_COUNT) {return filteredAds}
+    if (isOfferMatched(ad.offer)) {
+      filteredAds.push(ad);
+    }
+    if (filteredAds.length === MAX_ADS_COUNT) {
+      return filteredAds;
+    }
   }
   return filteredAds;
 }
