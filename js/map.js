@@ -106,4 +106,9 @@ const removeMarkers = () => {
   })
 };
 
-export { initMap, resetMainMarker, setAddress, removeMarkers, setMarkers };
+const reCreateMarkers = (offers) =>{
+  removeMarkers();
+  setMarkers(offers);
+}
+
+export { initMap, resetMainMarker, setAddress, removeMarkers, setMarkers, reCreateMarkers };

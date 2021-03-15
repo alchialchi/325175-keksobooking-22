@@ -28,7 +28,20 @@ const isEscEvent = (evt) => {
   return evt.key === ['Escape' || 'Esc'].includes(evt.key);
 };
 
+const debounce = (cb, ms) => {
+  let timer;
+
+  return () => {
+    if (timer) {
+      window.clearTimeout(timer);
+    }
+
+    timer = setTimeout(() => cb(), ms)
+  }
+};
+
 export {
   showAlert,
-  isEscEvent
+  isEscEvent,
+  debounce
 };
