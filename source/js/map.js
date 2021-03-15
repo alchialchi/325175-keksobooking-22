@@ -1,3 +1,4 @@
+import L from 'leaflet';
 import { MAIN_LATITUDE, MAIN_LONGITUDE, LOCATION_FLOAT } from './constants.js';
 import { createCard } from './card.js';
 import { activateForm, addressElement } from './form.js';
@@ -7,7 +8,7 @@ const MAIN_ZOOM = 10;
 const MAIN_PIN_WIDTH = 52;
 const PIN_WIDTH = 40;
 
-const map = window.L.map('map-canvas');
+const map = L.map('map-canvas');
 
 const setAddress = () => {
   addressElement.value = `${MAIN_LATITUDE}, ${MAIN_LONGITUDE}`;
@@ -26,7 +27,7 @@ const initMap = (offers) => {
       lng: MAIN_LONGITUDE,
     }, MAIN_ZOOM);
 
-  window.L.tileLayer(
+  L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -38,13 +39,13 @@ const markers = [];
 
 const setMarkers = (offers) => {
   offers.forEach((offer) => {
-    const offerPinIcon = window.L.icon({
+    const offerPinIcon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [PIN_WIDTH, PIN_WIDTH],
       iconAnchor: [PIN_WIDTH/2, PIN_WIDTH/2],
     });
 
-    const marker = window.L.marker(
+    const marker = L.marker(
       {
         lat: offer.location.lat,
         lng: offer.location.lng,
@@ -64,13 +65,13 @@ const setMarkers = (offers) => {
 };
 
 const initMainMarker = () => {
-  const mainPinIcon = window.L.icon({
+  const mainPinIcon = L.icon({
     iconUrl: 'img/main-pin.svg',
     iconSize: [MAIN_PIN_WIDTH, MAIN_PIN_WIDTH],
     iconAnchor: [MAIN_PIN_WIDTH/2, MAIN_PIN_WIDTH],
   });
 
-  const mainPinMarker = window.L.marker(
+  const mainPinMarker = L.marker(
     {
       lat: MAIN_LATITUDE,
       lng: MAIN_LONGITUDE,
@@ -97,7 +98,7 @@ const mainMarker = initMainMarker();
 
 const resetMainMarker = () => {
   mainMarker.setLatLng([MAIN_LATITUDE, MAIN_LONGITUDE])
-  map.setView(new window.L.LatLng(MAIN_LATITUDE, MAIN_LONGITUDE), MAIN_ZOOM);
+  map.setView(new L.LatLng(MAIN_LATITUDE, MAIN_LONGITUDE), MAIN_ZOOM);
 };
 
 const removeMarkers = () => {
