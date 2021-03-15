@@ -3,6 +3,7 @@ import { MAX_ROOMS_NUMBER } from './constants.js';
 import { setAddress, resetMainMarker } from './map.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
 import { deactivateFilterForm, activateFilterForm, mapFilters } from './filter.js';
+import { initPhotoUploaders, resetPreview } from './photo.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -65,6 +66,7 @@ const activateForm = () => {
     fieldset.removeAttribute('disabled');
   });
   addressElement.setAttribute('readonly', 'readonly');
+  initPhotoUploaders();
   activateFilterForm();
 };
 
@@ -73,6 +75,7 @@ const resetForm = () => {
   mapFilters.reset();
   resetMainMarker();
   setAddress();
+  resetPreview();
 }
 
 const setUserFormSubmit = () => {
