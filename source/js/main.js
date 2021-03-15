@@ -1,3 +1,4 @@
+import 'leaflet/dist/leaflet.css';
 import './card.js';
 import { disableForm, setFormReset, setUserFormSubmit } from './form.js';
 import { initMap } from './map.js';
